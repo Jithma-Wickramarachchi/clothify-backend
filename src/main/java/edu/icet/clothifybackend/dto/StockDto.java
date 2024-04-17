@@ -1,8 +1,11 @@
 package edu.icet.clothifybackend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 @Data
 @ToString
 @Builder
@@ -10,8 +13,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class StockDto {
     private Long stockId;
+    @NotNull
+    @NotBlank
     private String companyName;
+    @NotNull
+    @Positive
     private Integer initialItemCount;
+    @NotNull
+    @Positive
     private Integer availableItemCount;
-    private Date date;
+    @NotNull
+    private LocalDate date;
 }
