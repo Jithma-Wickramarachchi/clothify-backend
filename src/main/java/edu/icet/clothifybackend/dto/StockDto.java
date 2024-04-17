@@ -13,15 +13,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class StockDto {
     private Long stockId;
-    @NotNull
-    @NotBlank
+
+    @NotNull(message = "companyName cannot be null")
+    @NotBlank(message = "companyName cannot be blank")
     private String companyName;
-    @NotNull
-    @Positive
+
+    @NotNull(message = "initial item count cannot be null")
+    @Positive(message = "companyName should be positive number")
     private Integer initialItemCount;
-    @NotNull
-    @Positive
+
+    @NotNull(message = "available item count cannot be null")
+    @Positive(message = "available item count should be positive number")
     private Integer availableItemCount;
-    @NotNull
+
+    @NotNull(message = "date cannot be null")
     private LocalDate date;
 }

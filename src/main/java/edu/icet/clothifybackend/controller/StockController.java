@@ -3,6 +3,7 @@ package edu.icet.clothifybackend.controller;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.service.StockService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,12 @@ public class StockController {
     private final StockService service;
 
     @PostMapping
-    public ResponseEntity<StockDto> createStock(@RequestBody StockDto dto){
-        log.info(String.valueOf(dto));
+    public ResponseEntity<StockDto> createStock(@Valid @RequestBody StockDto dto){
         StockDto savedDto = service.saveStock(dto);
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<StockDto> getStockByStockId(@PathVariable Long id){
-        log.info(String.valueOf(id));
         StockDto dto = service.getStockByStockId(id)
                 .orElseThrow(() -> new StockIdNotFoundException("Stock id not found : "+ id));
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -35,7 +34,6 @@ public class StockController {
     @GetMapping
     public ResponseEntity<List<StockDto>> getAllStocks(){
         List<StockDto> dtoList = service.getAllStocks();
-        log.info(String.valueOf(dtoList));
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
@@ -46,8 +44,7 @@ public class StockController {
                 new ResponseEntity<>("Sorry, Something went wrong!", HttpStatus.BAD_REQUEST);
     }
     @PutMapping
-    public ResponseEntity<Optional<StockDto>> updateStock(@RequestBody StockDto dto){
-        log.info(String.valueOf(dto));
+    public ResponseEntity<Optional<StockDto>> updateStock(@Valid @RequestBody StockDto dto){
         Optional<StockDto> updatedDto = service.updateStock(dto);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
     }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,5 +28,5 @@ public class StockEntity {
     @Column(name = "available_item_count")
     private Integer availableItemCount;
 
-    private Date date;
+    private LocalDate date;
 }
