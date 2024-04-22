@@ -22,19 +22,17 @@ public class StockController {
 
     @PostMapping
     public ResponseEntity<StockDto> createStock(@Valid @RequestBody StockDto dto){
-        StockDto savedDto = service.saveStock(dto);
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.saveStock(dto), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<StockDto> getStockByStockId(@PathVariable Long id){
         StockDto dto = service.getStockByStockId(id)
-                .orElseThrow(() -> new StockIdNotFoundException("Stock id not found : "+ id));
+                .orElseThrow(() -> new StockIdNotFoundException(id));
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<StockDto>> getAllStocks(){
-        List<StockDto> dtoList = service.getAllStocks();
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllStocks(), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStockById(@PathVariable Long id){
