@@ -1,7 +1,6 @@
 package edu.icet.clothifybackend.controller;
 
 import edu.icet.clothifybackend.dto.StockDto;
-import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.service.StockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,7 @@ public class StockController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<StockDto> getStockByStockId(@PathVariable Long id){
-        StockDto dto = service.getStockByStockId(id)
-                .orElseThrow(() -> new StockIdNotFoundException(id));
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(service.getStockByStockId(id), HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<StockDto>> getAllStocks(){
@@ -36,10 +33,8 @@ public class StockController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStockById(@PathVariable Long id){
-
-        return Boolean.TRUE.equals(service.deleteStockById(id)) ?
-                new ResponseEntity<>("Stock("+id+") has been deleted successfully!", HttpStatus.OK) :
-                new ResponseEntity<>("Sorry, Something went wrong!", HttpStatus.BAD_REQUEST);
+        service.deleteStockById(id);
+        return new ResponseEntity<>("Stock("+id+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
     public ResponseEntity<Optional<StockDto>> updateStock(@Valid @RequestBody StockDto dto){

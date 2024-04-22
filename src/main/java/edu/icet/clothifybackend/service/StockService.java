@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface StockService {
     StockDto saveStock(StockDto stock);
-    Optional<StockDto> getStockByStockId(Long stockId);
+    StockDto getStockByStockId(Long stockId);
     List<StockDto> getAllStocks();
-    Boolean deleteStockById(Long stockId);
+    void deleteStockById(Long stockId);
     Optional<StockDto> updateStock(StockDto stockDto);
 }

@@ -3,6 +3,7 @@ package edu.icet.clothifybackend.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.entity.StockEntity;
+import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.repository.StockRepository;
 import edu.icet.clothifybackend.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,12 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public Optional<StockDto> getStockByStockId(Long stockId) {
-        return Optional.ofNullable(mapper.convertValue(repository.findById(stockId), StockDto.class));
+    public StockDto getStockByStockId(Long stockId) {
+        Optional<StockDto> dto = Optional.ofNullable(
+                mapper.convertValue(repository.findById(stockId), StockDto.class));
+
+        return dto.orElseThrow(()->
+                new StockIdNotFoundException(stockId));
     }
 
     @Override
@@ -45,17 +50,21 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public Boolean deleteStockById(Long stockId) {
-        if (repository.findById(stockId).isPresent()){
-            repository.deleteById(stockId);
-            return true;
+    public void deleteStockById(Long stockId) {
+
+        if(repository.findById(stockId).isEmpty()){
+            throw new StockIdNotFoundException(stockId);
         }
-        return false;
+        repository.deleteById(stockId);
     }
 
     @Override
     public Optional<StockDto> updateStock(StockDto dto) {
-        StockEntity savedEntity = repository.save(mapper.convertValue(dto, StockEntity.class));
-        return Optional.ofNullable(mapper.convertValue(savedEntity, StockDto.class));
+
+        if(repository.findById(dto.getStockId()).isEmpty()){
+            throw new StockIdNotFoundException(dto.getStockId());
+        }
+        return Optional.ofNullable(mapper.convertValue(
+                repository.save(mapper.convertValue(dto, StockEntity.class)), StockDto.class));
     }
 }
