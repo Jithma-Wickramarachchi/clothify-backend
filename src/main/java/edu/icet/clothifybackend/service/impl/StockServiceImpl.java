@@ -21,6 +21,7 @@ import java.util.Optional;
 public class StockServiceImpl implements StockService {
     private final StockRepository repository;
     private final ObjectMapper mapper;
+
     @Override
     public StockDto saveStock(StockDto dto) {
         StockEntity savedEntity = repository.save(mapper.convertValue(dto, StockEntity.class));
@@ -32,7 +33,8 @@ public class StockServiceImpl implements StockService {
         Optional<StockDto> dto = Optional.ofNullable(
                 mapper.convertValue(repository.findById(stockId), StockDto.class));
 
-        return dto.orElseThrow(()->
+        //if dto unavailable, throws the Exception
+        return dto.orElseThrow(() ->
                 new StockIdNotFoundException(stockId));
     }
 
@@ -41,10 +43,10 @@ public class StockServiceImpl implements StockService {
         Iterable<StockEntity> entityList = repository.findAll();
         Iterator<StockEntity> iterator = entityList.iterator();
 
+        //convert entities into dto and add one by one
         ArrayList<StockDto> dtoList = new ArrayList<>();
-
-        while (iterator.hasNext()){
-           dtoList.add(mapper.convertValue(iterator.next(), StockDto.class));
+        while (iterator.hasNext()) {
+            dtoList.add(mapper.convertValue(iterator.next(), StockDto.class));
         }
         return dtoList;
     }
@@ -52,19 +54,25 @@ public class StockServiceImpl implements StockService {
     @Override
     public void deleteStockById(Long stockId) {
 
-        if(repository.findById(stockId).isEmpty()){
+        //check id is in the database
+        if (repository.findById(stockId).isEmpty()) {
             throw new StockIdNotFoundException(stockId);
         }
         repository.deleteById(stockId);
     }
 
     @Override
-    public Optional<StockDto> updateStock(StockDto dto) {
+    public StockDto updateStock(StockDto dto) {
 
-        if(repository.findById(dto.getStockId()).isEmpty()){
+        //check whether id of StockDto in database
+        if (repository.findById(dto.getStockId()).isEmpty()) {
             throw new StockIdNotFoundException(dto.getStockId());
         }
-        return Optional.ofNullable(mapper.convertValue(
-                repository.save(mapper.convertValue(dto, StockEntity.class)), StockDto.class));
+
+        //convert dto into entity and update
+        StockEntity stockEntity = repository.save(mapper.convertValue(dto, StockEntity.class));
+
+        //convert entity into dto and return
+        return mapper.convertValue(stockEntity, StockDto.class);
     }
 }

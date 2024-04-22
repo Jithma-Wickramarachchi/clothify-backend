@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/stock")
@@ -37,8 +36,7 @@ public class StockController {
         return new ResponseEntity<>("Stock("+id+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
-    public ResponseEntity<Optional<StockDto>> updateStock(@Valid @RequestBody StockDto dto){
-        Optional<StockDto> updatedDto = service.updateStock(dto);
-        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    public ResponseEntity<StockDto> updateStock(@Valid @RequestBody StockDto dto){
+        return new ResponseEntity<>(service.updateStock(dto), HttpStatus.OK);
     }
 }
