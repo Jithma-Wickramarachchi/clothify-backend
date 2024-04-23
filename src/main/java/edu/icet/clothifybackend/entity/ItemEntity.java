@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.icet.clothifybackend.util.Category;
 import edu.icet.clothifybackend.util.Size;
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "item_id")
     private Long itemId;
     private String name;
     private String description;
@@ -24,6 +26,9 @@ public class ItemEntity {
     private Category category;
     private Size size;
     private Integer count;
-    @Column(name = "stock_id")
-    private Long stockId;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "stock",nullable = false)
+    private StockEntity stock;
 }
