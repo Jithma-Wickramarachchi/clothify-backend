@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
@@ -29,4 +30,8 @@ public class StockEntity {
     private Integer availableItemCount;
 
     private LocalDate date;
+
+    @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+   // @JoinColumn(name = "item_list")
+    private List<ItemEntity> itemList;
 }

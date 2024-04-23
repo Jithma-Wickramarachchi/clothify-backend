@@ -19,19 +19,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class StockServiceImpl implements StockService {
-    private final StockRepository repository;
+    private final StockRepository stockRepository;
     private final ObjectMapper mapper;
 
     @Override
     public StockDto saveStock(StockDto dto) {
-        StockEntity savedEntity = repository.save(mapper.convertValue(dto, StockEntity.class));
+        StockEntity savedEntity = stockRepository.save(mapper.convertValue(dto, StockEntity.class));
         return mapper.convertValue(savedEntity, StockDto.class);
     }
 
     @Override
     public StockDto getStockByStockId(Long stockId) {
         Optional<StockDto> dto = Optional.ofNullable(
-                mapper.convertValue(repository.findById(stockId), StockDto.class));
+                mapper.convertValue(stockRepository.findById(stockId), StockDto.class));
 
         //if dto unavailable, throws the Exception
         return dto.orElseThrow(() ->
@@ -40,7 +40,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockDto> getAllStocks() {
-        Iterable<StockEntity> entityList = repository.findAll();
+        Iterable<StockEntity> entityList = stockRepository.findAll();
         Iterator<StockEntity> iterator = entityList.iterator();
 
         //convert entities into dto and add one by one
@@ -55,22 +55,22 @@ public class StockServiceImpl implements StockService {
     public void deleteStockById(Long stockId) {
 
         //check id is in the database
-        if (repository.findById(stockId).isEmpty()) {
+        if (stockRepository.findById(stockId).isEmpty()) {
             throw new StockIdNotFoundException(stockId);
         }
-        repository.deleteById(stockId);
+        stockRepository.deleteById(stockId);
     }
 
     @Override
     public StockDto updateStock(StockDto dto) {
 
         //check whether id of StockDto in database
-        if (repository.findById(dto.getStockId()).isEmpty()) {
+        if (stockRepository.getStockByStockId(dto.getStockId()).isEmpty()) {
             throw new StockIdNotFoundException(dto.getStockId());
         }
 
         //convert dto into entity and update
-        StockEntity stockEntity = repository.save(mapper.convertValue(dto, StockEntity.class));
+        StockEntity stockEntity = stockRepository.save(mapper.convertValue(dto, StockEntity.class));
 
         //convert entity into dto and return
         return mapper.convertValue(stockEntity, StockDto.class);
