@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +29,10 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public StockDto getStockByStockId(Long stockId) {
-        Optional<StockDto> dto = Optional.ofNullable(
-                mapper.convertValue(stockRepository.findById(stockId), StockDto.class));
+        StockEntity entity = stockRepository.getStockByStockId(stockId)
+                .orElseThrow(()-> new StockIdNotFoundException(stockId));
 
-        //if dto unavailable, throws the Exception
-        return dto.orElseThrow(() ->
-                new StockIdNotFoundException(stockId));
+        return mapper.convertValue(entity, StockDto.class);
     }
 
     @Override
