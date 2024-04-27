@@ -16,9 +16,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -81,7 +83,7 @@ class StockServiceImplTests {
 
     @Test
     @DisplayName("Get stock by stockId success")
-    void GivenStockDtoId_WhenStockIdFound_thenReturnStockDto(){
+    void givenStockDtoId_whenStockIdFound_thenReturnStockDto(){
 
         when(repository.getStockByStockId(stockDto.getStockId())).thenReturn(Optional.ofNullable(stockEntity));
         when(mapper.convertValue(stockEntity, StockDto.class)).thenReturn(stockDtoWithId);
@@ -95,9 +97,9 @@ class StockServiceImplTests {
         Assertions.assertThat(savedDto.getAvailableItemCount()).isEqualTo(stockDtoWithId.getAvailableItemCount());
         Assertions.assertThat(savedDto.getDate()).isEqualTo(stockDtoWithId.getDate());
     }
-    @Test()
+    @Test
     @DisplayName("Get stock by stockId failure")
-    void GivenStockDtoId_WhenStockIdNotFound_thenThrowStockIdNotFoundException(){
+    void givenStockDtoId_whenStockIdNotFound_thenThrowStockIdNotFoundException(){
         Long stockId = stockDtoWithId.getStockId();
         when(repository.getStockByStockId(stockId)).thenThrow(new StockIdNotFoundException(stockDtoWithId.getStockId()));
 
@@ -105,5 +107,37 @@ class StockServiceImplTests {
                 () -> service.getStockByStockId(stockId));
 
         assertEquals("Stock Id not found! Id:"+stockId, stockIdNotFoundException.getMessage());
+    }
+    @Test
+    @DisplayName("Get All stocks success")
+    void whenCallMethod_thenReturnAllStocksAsList(){
+        List<StockEntity> stockList = Arrays.asList(stockEntity, stockEntity, stockEntity);
+        when(repository.getAllStocks()).thenReturn(stockList);
+        when(mapper.convertValue(stockEntity,StockDto.class)).thenReturn(stockDtoWithId);
+
+        List<StockDto> savedDtoList = service.getAllStocks();
+
+        assertThat(savedDtoList).hasSize(stockList.size());
+
+        //check first dto in savedDtoList
+        assertThat(savedDtoList.get(0).getStockId()).isEqualTo(stockEntity.getStockId());
+        assertThat(savedDtoList.get(0).getCompanyName()).isEqualTo(stockEntity.getCompanyName());
+        assertThat(savedDtoList.get(0).getInitialItemCount()).isEqualTo(stockEntity.getInitialItemCount());
+        assertThat(savedDtoList.get(0).getAvailableItemCount()).isEqualTo(stockEntity.getAvailableItemCount());
+        assertThat(savedDtoList.get(0).getDate()).isEqualTo(stockEntity.getDate());
+
+        //check second dto in savedDtoList
+        assertThat(savedDtoList.get(1).getStockId()).isEqualTo(stockEntity.getStockId());
+        assertThat(savedDtoList.get(1).getCompanyName()).isEqualTo(stockEntity.getCompanyName());
+        assertThat(savedDtoList.get(1).getInitialItemCount()).isEqualTo(stockEntity.getInitialItemCount());
+        assertThat(savedDtoList.get(1).getAvailableItemCount()).isEqualTo(stockEntity.getAvailableItemCount());
+        assertThat(savedDtoList.get(1).getDate()).isEqualTo(stockEntity.getDate());
+
+        //check first dto in savedDtoList
+        assertThat(savedDtoList.get(2).getStockId()).isEqualTo(stockEntity.getStockId());
+        assertThat(savedDtoList.get(2).getCompanyName()).isEqualTo(stockEntity.getCompanyName());
+        assertThat(savedDtoList.get(2).getInitialItemCount()).isEqualTo(stockEntity.getInitialItemCount());
+        assertThat(savedDtoList.get(2).getAvailableItemCount()).isEqualTo(stockEntity.getAvailableItemCount());
+        assertThat(savedDtoList.get(2).getDate()).isEqualTo(stockEntity.getDate());
     }
 }

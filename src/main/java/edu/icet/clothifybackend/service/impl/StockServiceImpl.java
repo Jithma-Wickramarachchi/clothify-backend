@@ -37,7 +37,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockDto> getAllStocks() {
-        Iterable<StockEntity> entityList = stockRepository.findAll();
+        Iterable<StockEntity> entityList = stockRepository.getAllStocks();
         Iterator<StockEntity> iterator = entityList.iterator();
 
         //convert entities into dto and add one by one
