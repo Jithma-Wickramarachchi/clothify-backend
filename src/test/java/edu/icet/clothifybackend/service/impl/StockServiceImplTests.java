@@ -3,6 +3,7 @@ package edu.icet.clothifybackend.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.entity.StockEntity;
+import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.repository.StockRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,5 +77,33 @@ class StockServiceImplTests {
         Assertions.assertThat(savedDto.getInitialItemCount()).isEqualTo(stockDtoWithId.getInitialItemCount());
         Assertions.assertThat(savedDto.getAvailableItemCount()).isEqualTo(stockDtoWithId.getAvailableItemCount());
         Assertions.assertThat(savedDto.getDate()).isEqualTo(stockDtoWithId.getDate());
+    }
+
+    @Test
+    @DisplayName("Get stock by stockId success")
+    void GivenStockDtoId_WhenStockIdFound_thenReturnStockDto(){
+
+        when(repository.getStockByStockId(stockDto.getStockId())).thenReturn(Optional.ofNullable(stockEntity));
+        when(mapper.convertValue(stockEntity, StockDto.class)).thenReturn(stockDtoWithId);
+
+        StockDto savedDto = service.getStockByStockId(stockDto.getStockId());
+
+        Assertions.assertThat(savedDto).isNotNull();
+        Assertions.assertThat(savedDto.getStockId()).isEqualTo(stockDtoWithId.getStockId());
+        Assertions.assertThat(savedDto.getCompanyName()).isEqualTo(stockDtoWithId.getCompanyName());
+        Assertions.assertThat(savedDto.getInitialItemCount()).isEqualTo(stockDtoWithId.getInitialItemCount());
+        Assertions.assertThat(savedDto.getAvailableItemCount()).isEqualTo(stockDtoWithId.getAvailableItemCount());
+        Assertions.assertThat(savedDto.getDate()).isEqualTo(stockDtoWithId.getDate());
+    }
+    @Test()
+    @DisplayName("Get stock by stockId failure")
+    void GivenStockDtoId_WhenStockIdNotFound_thenThrowStockIdNotFoundException(){
+        Long stockId = stockDtoWithId.getStockId();
+        when(repository.getStockByStockId(stockId)).thenThrow(new StockIdNotFoundException(stockDtoWithId.getStockId()));
+
+        StockIdNotFoundException stockIdNotFoundException = assertThrows(StockIdNotFoundException.class,
+                () -> service.getStockByStockId(stockId));
+
+        assertEquals("Stock Id not found! Id:"+stockId, stockIdNotFoundException.getMessage());
     }
 }
