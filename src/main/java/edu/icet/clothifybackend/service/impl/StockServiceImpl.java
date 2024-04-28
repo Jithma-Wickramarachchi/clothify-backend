@@ -49,13 +49,14 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public void deleteStockById(Long stockId) {
+    public Long deleteStockById(Long stockId) {
 
         //check id is in the database
-        if (stockRepository.findById(stockId).isEmpty()) {
+        if (stockRepository.getStockByStockId(stockId).isEmpty()) {
             throw new StockIdNotFoundException(stockId);
         }
         stockRepository.deleteById(stockId);
+        return stockId;
     }
 
     @Override

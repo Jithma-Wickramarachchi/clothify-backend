@@ -83,7 +83,7 @@ class StockServiceImplTests {
 
     @Test
     @DisplayName("Get stock by stockId success")
-    void givenStockDtoId_whenStockIdFound_thenReturnStockDto(){
+    void givenStockDtoId_whenGetStockIdFound_thenReturnStockDto(){
 
         when(repository.getStockByStockId(stockDto.getStockId())).thenReturn(Optional.ofNullable(stockEntity));
         when(mapper.convertValue(stockEntity, StockDto.class)).thenReturn(stockDtoWithId);
@@ -99,7 +99,7 @@ class StockServiceImplTests {
     }
     @Test
     @DisplayName("Get stock by stockId failure")
-    void givenStockDtoId_whenStockIdNotFound_thenThrowStockIdNotFoundException(){
+    void givenStockDtoId_whenGetStockIdNotFound_thenThrowStockIdNotFoundException(){
         Long stockId = stockDtoWithId.getStockId();
         when(repository.getStockByStockId(stockId)).thenThrow(new StockIdNotFoundException(stockDtoWithId.getStockId()));
 
@@ -139,5 +139,62 @@ class StockServiceImplTests {
         assertThat(savedDtoList.get(2).getInitialItemCount()).isEqualTo(stockEntity.getInitialItemCount());
         assertThat(savedDtoList.get(2).getAvailableItemCount()).isEqualTo(stockEntity.getAvailableItemCount());
         assertThat(savedDtoList.get(2).getDate()).isEqualTo(stockEntity.getDate());
+    }
+
+    @Test
+    @DisplayName("Delete stock by stockId success")
+    void givenStockDtoId_whenDeleteStockIdFound_thenDeleteAndReturnStockDtoId(){
+
+        when(repository.getStockByStockId(stockDtoWithId.getStockId())).thenReturn(Optional.ofNullable(stockEntity));
+
+        Long deletedStockId = service.deleteStockById(stockDtoWithId.getStockId());
+
+        assertThat(deletedStockId).isEqualTo(stockDtoWithId.getStockId());
+    }
+    @Test
+    @DisplayName("Delete stock by stockId failure")
+    void givenStockDtoId_whenDeleteStockIdNotFound_thenThrowStockIdNotFoundException(){
+
+        Long stockId = stockDtoWithId.getStockId();
+        when(repository.getStockByStockId(stockId)).thenReturn(Optional.empty());
+
+        StockIdNotFoundException stockIdNotFoundException = assertThrows(StockIdNotFoundException.class,
+                () -> service.deleteStockById(stockId));
+
+        assertEquals("Stock Id not found! Id:"+stockId, stockIdNotFoundException.getMessage());
+    }
+
+    @Test
+    @DisplayName("Update stock by stockId success")
+    void givenStockDtoId_whenUpdateStockDtoFound_thenUpdateAndReturnStockDto(){
+
+        when(repository.getStockByStockId(stockDtoWithId.getStockId())).thenReturn(Optional.ofNullable(stockEntity));
+        when(repository.save(stockEntity)).thenReturn(stockEntity);
+        when(mapper.convertValue(stockDtoWithId, StockEntity.class)).thenReturn(stockEntity);
+        when(mapper.convertValue(stockEntity, StockDto.class)).thenReturn(stockDtoWithId);
+
+        StockDto updatedStockDto = service.updateStock(stockDtoWithId);
+
+        assertThat(updatedStockDto)
+                .isEqualTo(stockDtoWithId);
+
+        assertThat(updatedStockDto.getStockId()).isEqualTo(stockDtoWithId.getStockId());
+        assertThat(updatedStockDto.getCompanyName()).isEqualTo(stockDtoWithId.getCompanyName());
+        assertThat(updatedStockDto.getInitialItemCount()).isEqualTo(stockDtoWithId.getInitialItemCount());
+        assertThat(updatedStockDto.getAvailableItemCount()).isEqualTo(stockDtoWithId.getAvailableItemCount());
+        assertThat(updatedStockDto.getDate()).isEqualTo(stockDtoWithId.getDate());
+
+    }
+    @Test
+    @DisplayName("Update stock by stockId failure")
+    void givenStockDtoId_whenUpdateStockDtoNotFound_thenThrowsStockIdNotFoundException(){
+
+        Long stockId = stockDtoWithId.getStockId();
+        when(repository.getStockByStockId(stockId)).thenReturn(Optional.empty());
+
+        StockIdNotFoundException stockIdNotFoundException = assertThrows(StockIdNotFoundException.class,
+                () -> service.updateStock(stockDtoWithId));
+
+        assertEquals("Stock Id not found! Id:"+stockId, stockIdNotFoundException.getMessage());
     }
 }
