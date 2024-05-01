@@ -8,6 +8,6 @@ public interface ItemService {
     ItemDto createItem(ItemDto dto);
     ItemDto getItemByItemId(Long itemId);
     List<ItemDto> getAllItems();
-    void deleteItemById(Long itemId);
+    Long deleteItemById(Long itemId);
     ItemDto updateItem(ItemDto dto);
 }

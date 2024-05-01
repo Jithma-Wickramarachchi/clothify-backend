@@ -40,6 +40,7 @@ public class ItemServiceImpl implements ItemService {
 
         //get latest saved entity and convert into dto and return
         ItemEntity savedItemEntity = savedStockEntity.getItemList().get(savedStockEntity.getItemList().size()-1);
+
         return mapper.convertEntityToDto(savedItemEntity);
     }
 
@@ -68,20 +69,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItemById(Long itemId) {
+    public Long deleteItemById(Long itemId) {
         //check id available the database
-        if (itemRepository.findById(itemId).isEmpty()) {
+        if (itemRepository.getItemByItemId(itemId).isEmpty()) {
             throw new ItemIdNotFoundException(itemId);
         }
-
         itemRepository.deleteById(itemId);
+        return itemId;
     }
 
     @Override
     public ItemDto updateItem(ItemDto dto) {
-        //check whether id of ItemDto in database
+        //check whether stockId of ItemDto in database
         StockEntity stockEntity = stockRepository.getStockByStockId(dto.getStockId())
                 .orElseThrow(()-> new StockIdNotFoundException(dto.getStockId()));
+
+        //check whether itemId of ItemDto in database
+        if(itemRepository.getItemByItemId(dto.getItemId()).isEmpty()){
+                throw new ItemIdNotFoundException(dto.getItemId());
+        }
 
         //convert dto into entity and update
         ItemEntity itemEntity = itemRepository.save(mapper.convertDtoToEntity(dto, stockEntity));

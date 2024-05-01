@@ -32,8 +32,8 @@ public class StockController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStockById(@PathVariable Long id){
-        service.deleteStockById(id);
-        return new ResponseEntity<>("Stock("+id+") has been deleted successfully!", HttpStatus.OK);
+        Long deletedStockId = service.deleteStockById(id);
+        return new ResponseEntity<>("Stock("+deletedStockId+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
     public ResponseEntity<StockDto> updateStock(@Valid @RequestBody StockDto dto){

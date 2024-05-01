@@ -32,8 +32,8 @@ public class ItemController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItemById(@PathVariable Long id){
-        service.deleteItemById(id);
-        return new ResponseEntity<>("Item("+id+") has been deleted successfully!", HttpStatus.OK);
+        Long deletedItemId = service.deleteItemById(id);
+        return new ResponseEntity<>("Item("+deletedItemId+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
     public ResponseEntity<ItemDto> updateItem(@Valid @RequestBody ItemDto dto){
