@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.exception.GlobalExceptionHandler;
@@ -29,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -218,5 +218,18 @@ class StockControllerTests {
                 .andExpect(jsonPath("$[2].date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
                 .andDo(print());
     }
+    @Test
+    @DisplayName("Delete stock by stockId success")
+    void givenStockDtoId_whenDeleteStockIdFound_thenDeleteAndReturnStockDtoId() throws Exception {
+        Long stockId = stockDtoWithId.getStockId();
+        given(service.deleteStockById(stockId)).willReturn(stockId);
 
+        ResultActions response = mockMvc.perform(delete(String.format("/api/v1/stock/%s", stockId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockId)));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$", CoreMatchers.is(
+                        "Stock("+stockId+") has been deleted successfully!")));
+    }
 }
