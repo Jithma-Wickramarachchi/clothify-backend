@@ -248,4 +248,24 @@ class StockControllerTests {
                 .andExpect
                         (result -> assertEquals("Stock Id not found! Id:"+stockId, Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
+    @Test
+    @DisplayName("Update stock by stockId success")
+    void givenStockDtoId_whenUpdateStockDtoFound_thenUpdateAndReturnStockDto() throws Exception {
+        given(service.updateStock(stockDtoWithId))
+                .willReturn(stockDtoWithId);
+
+        ResultActions response = mockMvc.perform(put("/api/v1/stock")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockDtoWithId)));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$.initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$.availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$.date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$.date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
+                .andDo(print());
+    }
 }
