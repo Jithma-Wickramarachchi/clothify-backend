@@ -232,4 +232,20 @@ class StockControllerTests {
                 .andExpect(jsonPath("$", CoreMatchers.is(
                         "Stock("+stockId+") has been deleted successfully!")));
     }
+    @Test
+    @DisplayName("Delete stock by stockId failure")
+    void givenStockDtoId_whenDeleteStockIdNotFound_thenThrowStockIdNotFoundException() throws Exception {
+        Long stockId = stockDtoWithId.getStockId();
+        given(service.deleteStockById(stockId)).willThrow(new StockIdNotFoundException(stockId));
+
+        ResultActions response = mockMvc.perform(delete(String.format("/api/v1/stock/%s", stockId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockId)));
+
+        response.andExpect(status().isNotFound())
+                .andExpect
+                        (result -> assertInstanceOf(StockIdNotFoundException.class, result.getResolvedException()))
+                .andExpect
+                        (result -> assertEquals("Stock Id not found! Id:"+stockId, Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
 }
