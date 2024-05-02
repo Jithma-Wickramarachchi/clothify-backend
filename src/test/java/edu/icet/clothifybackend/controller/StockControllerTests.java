@@ -268,4 +268,20 @@ class StockControllerTests {
                 .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
                 .andDo(print());
     }
+    @Test
+    @DisplayName("Update stock by stockId failure")
+    void givenStockDtoId_whenUpdateStockDtoNotFound_thenThrowsStockIdNotFoundException() throws Exception {
+        Long stockId = stockDtoWithId.getStockId();
+        given(service.updateStock(stockDtoWithId)).willThrow(new StockIdNotFoundException(stockId));
+
+        ResultActions response = mockMvc.perform(put("/api/v1/stock")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockDtoWithId)));
+
+        response.andExpect(status().isNotFound())
+                .andExpect
+                        (result -> assertInstanceOf(StockIdNotFoundException.class, result.getResolvedException()))
+                .andExpect
+                        (result -> assertEquals("Stock Id not found! Id:"+stockId, Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
 }
