@@ -5,6 +5,7 @@ import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.exception.GlobalExceptionHandler;
 import edu.icet.clothifybackend.service.StockService;
 import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Assertions;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +22,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -116,6 +120,27 @@ class StockControllerTests {
                 .andExpect(jsonPath("$.initialItemCount", CoreMatchers.is("initial item count should be positive number")))
                 .andExpect(jsonPath("$.availableItemCount", CoreMatchers.is("available item count should be positive number")))
                 .andExpect(jsonPath("$.date", CoreMatchers.is("date cannot be null")))
+                .andDo(print());
+    }
+    @Test
+    @DisplayName(value = "Stock successfully creation")
+    void givenStockDto_whenCreateStock_thenReturnCreatedStockDto() throws Exception {
+
+        given(service.saveStock(any()))
+                .willReturn(stockDtoWithId);
+
+        ResultActions response = mockMvc.perform(post("/api/v1/stock")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockDto)));
+
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$.initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$.availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$.date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$.date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
                 .andDo(print());
     }
 }
