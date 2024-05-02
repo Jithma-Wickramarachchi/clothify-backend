@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -142,5 +143,26 @@ class StockControllerTests {
                 .andExpect(jsonPath("$.date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
                 .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
                 .andDo(print());
+    }
+    @Test
+    @DisplayName(value = "Get stock by stockId success")
+    void givenStockDtoId_whenGetStockIdFound_thenReturnStockDto() throws Exception {
+        Long stockId = stockDtoWithId.getStockId();
+        given(service.getStockByStockId(stockId)).willReturn(stockDtoWithId);
+
+        ResultActions response = mockMvc.perform(get(String.format("/api/v1/stock/%s",stockId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockId)));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$.initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$.availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$.date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$.date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
+                .andDo(print());
+
     }
 }
