@@ -3,9 +3,9 @@ package edu.icet.clothifybackend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.exception.GlobalExceptionHandler;
+import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.service.StockService;
 import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Assertions;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,13 +22,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -163,6 +165,58 @@ class StockControllerTests {
                 .andExpect(jsonPath("$.date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
                 .andExpect(jsonPath("$.date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
                 .andDo(print());
-
     }
+    @Test
+    @DisplayName(value = "Get stock by stockId failure")
+    void givenStockDtoId_whenGetStockIdNotFound_thenThrowStockIdNotFoundException() throws Exception {
+        Long stockId = stockDtoWithId.getStockId();
+        given(service.getStockByStockId(stockId)).willThrow(new StockIdNotFoundException(stockId));
+
+        ResultActions response = mockMvc.perform(get(String.format("/api/v1/stock/%s", stockId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(stockId)));
+
+        response.andExpect(status().isNotFound())
+                .andExpect
+                        (result -> assertInstanceOf(StockIdNotFoundException.class, result.getResolvedException()))
+                .andExpect
+                        (result -> assertEquals("Stock Id not found! Id:"+stockId, Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
+    @Test
+    @DisplayName("Get All stocks success")
+    void whenCallMethod_thenReturnAllStocksAsList() throws Exception {
+        given(service.getAllStocks()).willReturn(Arrays.asList(stockDtoWithId, stockDtoWithId, stockDtoWithId));
+
+        ResultActions response = mockMvc.perform(get("/api/v1/stock/"));
+
+        response.andExpect(status().isOk())
+                //check first stock in list
+                .andExpect(jsonPath("$[0].stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[0].companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$[0].initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$[0].availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$[0].date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$[0].date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$[0].date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
+
+                //check second stock in list
+                .andExpect(jsonPath("$[1].stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[1].companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$[1].initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$[1].availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$[1].date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$[1].date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$[1].date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
+
+                //check third stock in list
+                .andExpect(jsonPath("$[2].stockId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[2].companyName", CoreMatchers.is("Brandix")))
+                .andExpect(jsonPath("$[2].initialItemCount", CoreMatchers.is(514)))
+                .andExpect(jsonPath("$[2].availableItemCount", CoreMatchers.is(210)))
+                .andExpect(jsonPath("$[2].date[0]", CoreMatchers.is(stockDtoWithId.getDate().getYear())))
+                .andExpect(jsonPath("$[2].date[1]", CoreMatchers.is(stockDtoWithId.getDate().getMonthValue())))
+                .andExpect(jsonPath("$[2].date[2]", CoreMatchers.is(stockDtoWithId.getDate().getDayOfMonth())))
+                .andDo(print());
+    }
+
 }
