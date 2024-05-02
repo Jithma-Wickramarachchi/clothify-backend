@@ -14,12 +14,11 @@ import java.time.LocalDate;
 public class StockDto {
     private Long stockId;
 
-    @NotNull(message = "companyName cannot be null")
-    @NotBlank(message = "companyName cannot be blank")
+    @NotBlank(message = "companyName cannot be blank or null")
     private String companyName;
 
     @NotNull(message = "initial item count cannot be null")
-    @Positive(message = "companyName should be positive number")
+    @Positive(message = "initial item count should be positive number")
     private Integer initialItemCount;
 
     @NotNull(message = "available item count cannot be null")
