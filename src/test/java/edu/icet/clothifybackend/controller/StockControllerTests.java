@@ -1,6 +1,5 @@
 package edu.icet.clothifybackend.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.StockDto;
 import edu.icet.clothifybackend.exception.GlobalExceptionHandler;
@@ -99,8 +98,7 @@ class StockControllerTests {
     @DisplayName(value = "Throw MethodArgumentNotValidException for null RequestDto")
     void catchMethodArgumentNotValidExceptionForNullRequestDto() throws Exception {
         ResultActions nullResponse = mockMvc.perform(post("/api/v1/stock")
-                        .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(nullStockDto)))
-                .andExpect(status().isBadRequest());
+                        .contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(nullStockDto)));
 
         nullResponse.andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.companyName", CoreMatchers.is("companyName cannot be blank or null")))
@@ -190,6 +188,7 @@ class StockControllerTests {
         ResultActions response = mockMvc.perform(get("/api/v1/stock/"));
 
         response.andExpect(status().isOk())
+
                 //check first stock in list
                 .andExpect(jsonPath("$[0].stockId", CoreMatchers.is(1)))
                 .andExpect(jsonPath("$[0].companyName", CoreMatchers.is("Brandix")))
