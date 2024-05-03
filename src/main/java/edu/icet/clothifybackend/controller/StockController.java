@@ -1,7 +1,6 @@
 package edu.icet.clothifybackend.controller;
 
 import edu.icet.clothifybackend.dto.StockDto;
-import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.service.StockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/stock")
@@ -22,30 +20,23 @@ public class StockController {
 
     @PostMapping
     public ResponseEntity<StockDto> createStock(@Valid @RequestBody StockDto dto){
-        StockDto savedDto = service.saveStock(dto);
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.saveStock(dto), HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<StockDto> getStockByStockId(@PathVariable Long id){
-        StockDto dto = service.getStockByStockId(id)
-                .orElseThrow(() -> new StockIdNotFoundException("Stock id not found : "+ id));
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(service.getStockByStockId(id), HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<StockDto>> getAllStocks(){
-        List<StockDto> dtoList = service.getAllStocks();
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllStocks(), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStockById(@PathVariable Long id){
-
-        return Boolean.TRUE.equals(service.deleteStockById(id)) ?
-                new ResponseEntity<>("Stock("+id+") has been deleted successfully!", HttpStatus.OK) :
-                new ResponseEntity<>("Sorry, Something went wrong!", HttpStatus.BAD_REQUEST);
+        Long deletedStockId = service.deleteStockById(id);
+        return new ResponseEntity<>("Stock("+deletedStockId+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
-    public ResponseEntity<Optional<StockDto>> updateStock(@Valid @RequestBody StockDto dto){
-        Optional<StockDto> updatedDto = service.updateStock(dto);
-        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    public ResponseEntity<StockDto> updateStock(@Valid @RequestBody StockDto dto){
+        return new ResponseEntity<>(service.updateStock(dto), HttpStatus.OK);
     }
 }
