@@ -33,6 +33,5 @@ public class StockEntity {
     private LocalDate date;
 
     @OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
-   // @JoinColumn(name = "item_list")
     private List<ItemEntity> itemList;
 }
