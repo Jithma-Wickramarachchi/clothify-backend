@@ -2,38 +2,51 @@
 package edu.icet.clothifybackend.service.impl;
 
 import edu.icet.clothifybackend.dto.ItemImageRetrieveDto;
+import edu.icet.clothifybackend.dto.ItemImageSaveDto;
+import edu.icet.clothifybackend.entity.ItemEntity;
 import edu.icet.clothifybackend.entity.ItemImageEntity;
+import edu.icet.clothifybackend.exception.ItemIdNotFoundException;
 import edu.icet.clothifybackend.exception.ItemImageNotFoundException;
 import edu.icet.clothifybackend.repository.ItemImageRepository;
+import edu.icet.clothifybackend.repository.ItemRepository;
 import edu.icet.clothifybackend.service.ItemImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ItemImageServiceImpl implements ItemImageService {
-    private final ItemImageRepository repository;
+    private final ItemImageRepository imageRepository;
+    private final ItemRepository itemRepository;
 
     @Override
-    public Long saveImage(MultipartFile file) throws IOException {
+    public Long saveImage(ItemImageSaveDto dto) throws IOException {
+        log.info("itemImage service runs...");
+        //Check that itemId is available
+        ItemEntity itemEntity = itemRepository.getItemByItemId(dto.getItemId())
+                .orElseThrow(() ->
+                        new ItemIdNotFoundException(dto.getItemId()));
+
         //Convert image to byte[]
         ItemImageEntity entity = ItemImageEntity.builder()
-                .name(file.getName())
-                .data(file.getBytes()).build();
+                .item(itemEntity)
+                .name(dto.getFile().getName())
+                .data(dto.getFile().getBytes()).build();
 
         //Save the byte[] and return its id.
-        ItemImageEntity savedEntity = repository.save(entity);
+        ItemImageEntity savedEntity = imageRepository.save(entity);
         return savedEntity.getId();
     }
 
     @Override
-    public ItemImageRetrieveDto retrieveImage(Long id){
+    public ItemImageRetrieveDto retrieveImage(Long id) {
         //Throws exception when image not found
-        ItemImageEntity entity = repository.findById(id)
-                .orElseThrow(()-> new ItemImageNotFoundException(id));
+        ItemImageEntity entity = imageRepository.findItemImageByItemId(id)
+                .orElseThrow(() -> new ItemImageNotFoundException(id));
 
         //Return byte[] of the image
         return ItemImageRetrieveDto.builder()

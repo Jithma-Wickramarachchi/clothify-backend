@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.controller;
 
+import edu.icet.clothifybackend.dto.ItemImageSaveDto;
 import edu.icet.clothifybackend.service.ItemImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,13 @@ import java.io.IOException;
 @RequestMapping("/api/v1/item/image")
 public class ItemImageController {
     private final ItemImageService service;
-    @PostMapping
-    public ResponseEntity<String> saveItemImage(@RequestParam("file") MultipartFile file) throws IOException {
-        log.info("controller posting works");
-        return ResponseEntity.ok("Item image saved successfully! id:"+service.saveImage(file));
+    @PostMapping("/{itemId}")
+    public ResponseEntity<String> saveItemImage(@RequestParam("file") MultipartFile file, @PathVariable Long itemId) throws IOException {
+        ItemImageSaveDto dto = ItemImageSaveDto.builder()
+                .itemId(itemId)
+                .file(file)
+                .build();
+        return ResponseEntity.ok("Item image saved successfully! id:"+service.saveImage(dto));
     }
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> retrieveItemImage(@PathVariable Long id) throws IOException {

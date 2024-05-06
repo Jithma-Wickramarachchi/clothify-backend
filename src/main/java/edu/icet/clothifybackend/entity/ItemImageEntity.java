@@ -20,4 +20,9 @@ public class ItemImageEntity {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
+
+    @OneToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private ItemEntity item;
+
 }
