@@ -3,12 +3,17 @@ package edu.icet.clothifybackend.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.AddressDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
+import edu.icet.clothifybackend.entity.ItemEntity;
+import edu.icet.clothifybackend.entity.StockEntity;
 import edu.icet.clothifybackend.entity.UserEntity;
 import edu.icet.clothifybackend.exception.AddressNotFoundException;
+import edu.icet.clothifybackend.exception.ItemIdNotFoundException;
+import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.exception.UserNotFoundException;
 import edu.icet.clothifybackend.repository.AddressRepository;
 import edu.icet.clothifybackend.repository.UserRepository;
 import edu.icet.clothifybackend.service.AddressService;
+import edu.icet.clothifybackend.service.config.AddressMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,22 +25,18 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
-    private final ObjectMapper mapper;
+    private final AddressMapper mapper;
     @Override
     public AddressDto saveAddress(AddressDto dto) {
         //Throw exception when user not found
         UserEntity userEntity = userRepository.findById(dto.getUserId())
                 .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
 
-        //convert address dto to entity
-        AddressEntity addressEntity = mapper.convertValue(dto, AddressEntity.class);
-        addressEntity.setUser(userEntity);
+        //convert address dto to entity and save
+        AddressEntity savedAddress = addressRepository.save(mapper.convertDtoToEntity(dto, userEntity));
 
         //Convert saved entity into dto and return
-        return mapper.convertValue(
-                addressRepository.save(addressEntity),
-                AddressDto.class
-        );
+        return mapper.convertEntityToDto(savedAddress);
     }
 
     @Override
@@ -46,8 +47,7 @@ public class AddressServiceImpl implements AddressService {
         //convert entities into dto and add one by one
         ArrayList<AddressDto> dtoList = new ArrayList<>();
         while (iterator.hasNext()) {
-            AddressDto dto = mapper.convertValue(iterator.next(), AddressDto.class);
-            dto.setUserId(iterator.next().getId());
+            AddressDto dto = mapper.convertEntityToDto(iterator.next());
             dtoList.add(dto);
         }
         return dtoList;
@@ -65,6 +65,18 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto updateAddress(AddressDto dto) {
-        return null;
+        //check whether user in database
+        UserEntity userEntity = userRepository.findById(dto.getUserId())
+                .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
+
+        //check whether address in database
+        addressRepository.findById(dto.getId())
+                .orElseThrow(()-> new AddressNotFoundException(dto.getId()));
+
+        //convert dto into entity and update
+        AddressEntity savedEntity = addressRepository.save(mapper.convertDtoToEntity(dto, userEntity));
+
+        //convert entity into dto and return
+        return mapper.convertEntityToDto(savedEntity);
     }
 }
