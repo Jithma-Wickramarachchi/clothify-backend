@@ -2,11 +2,10 @@ package edu.icet.clothifybackend.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.AddressDto;
-import edu.icet.clothifybackend.dto.ItemDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
-import edu.icet.clothifybackend.entity.ItemEntity;
 import edu.icet.clothifybackend.entity.UserEntity;
-import edu.icet.clothifybackend.exception.UserNotFoundByUserId;
+import edu.icet.clothifybackend.exception.AddressNotFoundException;
+import edu.icet.clothifybackend.exception.UserNotFoundException;
 import edu.icet.clothifybackend.repository.AddressRepository;
 import edu.icet.clothifybackend.repository.UserRepository;
 import edu.icet.clothifybackend.service.AddressService;
@@ -26,7 +25,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto saveAddress(AddressDto dto) {
         //Throw exception when user not found
         UserEntity userEntity = userRepository.findById(dto.getUserId())
-                .orElseThrow(()-> new UserNotFoundByUserId(dto.getUserId()));
+                .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
 
         //convert address dto to entity
         AddressEntity addressEntity = mapper.convertValue(dto, AddressEntity.class);
@@ -56,7 +55,12 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Long deleteAddress(Long id) {
-        return null;
+        //check id available the database
+        if (addressRepository.findById(id).isEmpty()) {
+            throw new AddressNotFoundException(id);
+        }
+        addressRepository.deleteById(id);
+        return id;
     }
 
     @Override
