@@ -1,14 +1,9 @@
 package edu.icet.clothifybackend.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.AddressDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
-import edu.icet.clothifybackend.entity.ItemEntity;
-import edu.icet.clothifybackend.entity.StockEntity;
 import edu.icet.clothifybackend.entity.UserEntity;
 import edu.icet.clothifybackend.exception.AddressNotFoundException;
-import edu.icet.clothifybackend.exception.ItemIdNotFoundException;
-import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.exception.UserNotFoundException;
 import edu.icet.clothifybackend.repository.AddressRepository;
 import edu.icet.clothifybackend.repository.UserRepository;
