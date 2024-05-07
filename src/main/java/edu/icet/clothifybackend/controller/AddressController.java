@@ -24,4 +24,9 @@ public class AddressController {
     public ResponseEntity<List<AddressDto>> getAddressListByUserId(Long id){
         return new ResponseEntity<>(service.getAddressListByUserId(id), HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAddress(@PathVariable Long id){
+        Long deletedAddressId = service.deleteAddress(id);
+        return new ResponseEntity<>("Address("+deletedAddressId+") has been deleted successfully!", HttpStatus.OK);
+    }
 }
