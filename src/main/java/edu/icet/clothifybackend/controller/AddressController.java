@@ -29,4 +29,8 @@ public class AddressController {
         Long deletedAddressId = service.deleteAddress(id);
         return new ResponseEntity<>("Address("+deletedAddressId+") has been deleted successfully!", HttpStatus.OK);
     }
+    @PutMapping
+    public ResponseEntity<AddressDto> updateAddress(@Valid @RequestBody AddressDto dto){
+        return new ResponseEntity<>(service.updateAddress(dto), HttpStatus.OK);
+    }
 }
