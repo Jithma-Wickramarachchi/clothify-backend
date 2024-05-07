@@ -35,7 +35,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDto> getListByUserId(Long id) {
+    public List<AddressDto> getAddressListByUserId(Long id) {
         List<AddressEntity> entityList = addressRepository.getAddressListByUserId(id);
         Iterator<AddressEntity> iterator = entityList.iterator();
 

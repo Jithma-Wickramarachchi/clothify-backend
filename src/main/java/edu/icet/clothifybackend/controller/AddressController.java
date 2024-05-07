@@ -20,4 +20,8 @@ public class AddressController {
     public ResponseEntity<AddressDto> saveAddress(@Valid @RequestBody AddressDto dto){
         return new ResponseEntity<>(service.saveAddress(dto), HttpStatus.CREATED);
     }
+    @GetMapping
+    public ResponseEntity<List<AddressDto>> getAddressListByUserId(Long id){
+        return new ResponseEntity<>(service.getAddressListByUserId(id), HttpStatus.OK);
+    }
 }
