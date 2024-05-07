@@ -2,7 +2,9 @@ package edu.icet.clothifybackend.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.AddressDto;
+import edu.icet.clothifybackend.dto.ItemDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
+import edu.icet.clothifybackend.entity.ItemEntity;
 import edu.icet.clothifybackend.entity.UserEntity;
 import edu.icet.clothifybackend.exception.UserNotFoundByUserId;
 import edu.icet.clothifybackend.repository.AddressRepository;
@@ -11,6 +13,8 @@ import edu.icet.clothifybackend.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -37,7 +41,17 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDto> getListByUserId(Long id) {
-        return null;
+        List<AddressEntity> entityList = addressRepository.getAddressListByUserId(id);
+        Iterator<AddressEntity> iterator = entityList.iterator();
+
+        //convert entities into dto and add one by one
+        ArrayList<AddressDto> dtoList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            AddressDto dto = mapper.convertValue(iterator.next(), AddressDto.class);
+            dto.setUserId(iterator.next().getId());
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     @Override
