@@ -1,5 +1,9 @@
 package edu.icet.clothifybackend.exception;
 
+import edu.icet.clothifybackend.exception.item.ItemIdNotFoundException;
+import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
+import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
+import edu.icet.clothifybackend.exception.user.PaymentDetailsNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,11 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(AddressNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAddressNotFoundException(AddressNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+    @ExceptionHandler(PaymentDetailsNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentDetailsNotFoundException(PaymentDetailsNotFoundException ex){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
