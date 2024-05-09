@@ -1,10 +1,8 @@
 package edu.icet.clothifybackend.service.impl.user;
 
 import edu.icet.clothifybackend.dto.user.ContactNumberDto;
-import edu.icet.clothifybackend.entity.user.AddressEntity;
 import edu.icet.clothifybackend.entity.user.ContactNumberEntity;
 import edu.icet.clothifybackend.entity.user.User;
-import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
 import edu.icet.clothifybackend.exception.user.ContactNumberNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
 import edu.icet.clothifybackend.repository.user.ContactNumberRepository;
