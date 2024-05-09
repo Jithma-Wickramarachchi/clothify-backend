@@ -3,6 +3,8 @@ package edu.icet.clothifybackend.service.impl.user;
 import edu.icet.clothifybackend.dto.user.ContactNumberDto;
 import edu.icet.clothifybackend.entity.user.ContactNumberEntity;
 import edu.icet.clothifybackend.entity.user.User;
+import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
+import edu.icet.clothifybackend.exception.user.ContactNumberNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
 import edu.icet.clothifybackend.repository.user.ContactNumberRepository;
 import edu.icet.clothifybackend.repository.user.UserRepository;
@@ -49,7 +51,12 @@ public class ContactNumberServiceImpl implements ContactNumberService {
 
     @Override
     public String deleteContact(String contact) {
-        return null;
+        //check contact available the database
+        if (contactRepository.findById(contact).isEmpty()) {
+            throw new ContactNumberNotFoundException(contact);
+        }
+        contactRepository.deleteById(contact);
+        return contact;
     }
 
     @Override
