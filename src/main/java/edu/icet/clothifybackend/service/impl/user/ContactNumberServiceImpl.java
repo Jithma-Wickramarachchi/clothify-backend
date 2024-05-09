@@ -1,6 +1,7 @@
 package edu.icet.clothifybackend.service.impl.user;
 
 import edu.icet.clothifybackend.dto.user.ContactNumberDto;
+import edu.icet.clothifybackend.entity.user.AddressEntity;
 import edu.icet.clothifybackend.entity.user.ContactNumberEntity;
 import edu.icet.clothifybackend.entity.user.User;
 import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
@@ -61,6 +62,17 @@ public class ContactNumberServiceImpl implements ContactNumberService {
 
     @Override
     public ContactNumberDto updateContact(ContactNumberDto dto) {
-        return null;
-    }
+        //check whether user in database
+        User user = userRepository.findUserByUsername(dto.getUsername())
+                .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
+
+        //check whether contact in database or not
+        if (contactRepository.findById(dto.getContactNumber()).isEmpty()) {
+            throw new ContactNumberNotFoundException(dto.getContactNumber());
+        }
+        //convert dto into entity and update
+        ContactNumberEntity savedEntity = contactRepository.save(mapper.convertDtoToEntity(dto, user));
+
+        //convert entity into dto and return
+        return mapper.convertEntityToDto(savedEntity);    }
 }
