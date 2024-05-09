@@ -10,10 +10,12 @@ import edu.icet.clothifybackend.repository.user.UserRepository;
 import edu.icet.clothifybackend.service.user.PaymentDetailsService;
 import edu.icet.clothifybackend.service.util.PaymentDetailsMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+@Service
 @RequiredArgsConstructor
 public class PaymentDetailsServiceImpl implements PaymentDetailsService {
 
