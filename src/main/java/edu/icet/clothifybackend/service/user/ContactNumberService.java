@@ -1,6 +1,5 @@
 package edu.icet.clothifybackend.service.user;
 
-import edu.icet.clothifybackend.dto.user.AddressDto;
 import edu.icet.clothifybackend.dto.user.ContactNumberDto;
 
 import java.util.List;
