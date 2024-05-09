@@ -35,8 +35,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDto> getAddressListByUserId(Long id) {
-        List<AddressEntity> entityList = addressRepository.getAddressListByUserId(id);
+    public List<AddressDto> getAddressListByUsername(String username) {
+        List<AddressEntity> entityList = addressRepository.getAddressListByUsername(username);
         Iterator<AddressEntity> iterator = entityList.iterator();
 
         //convert entities into dto and add one by one
