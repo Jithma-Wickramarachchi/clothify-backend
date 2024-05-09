@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactNumberDto {
+    private Long id;
 
     @NotBlank(message = "contact number cannot be blank or null")
     private String contactNumber;

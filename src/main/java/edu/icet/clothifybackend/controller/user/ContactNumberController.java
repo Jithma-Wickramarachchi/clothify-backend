@@ -23,10 +23,10 @@ public class ContactNumberController {
     public ResponseEntity<List<ContactNumberDto>> getContactListByUsername(@PathVariable String username){
         return new ResponseEntity<>(service.getContactListByUsername(username), HttpStatus.OK);
     }
-    @DeleteMapping("/{contact}")
-    public ResponseEntity<String> deleteAddress(@PathVariable String contact){
-        String deletedContact = service.deleteContact(contact);
-        return new ResponseEntity<>("Contact Number("+deletedContact+") has been deleted successfully!", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAddress(@PathVariable Long id){
+        Long deletedContactId = service.deleteContact(id);
+        return new ResponseEntity<>("Contact Number Id("+deletedContactId+") has been deleted successfully!", HttpStatus.OK);
     }
     @PutMapping
     public ResponseEntity<ContactNumberDto> updateContact(@Valid @RequestBody ContactNumberDto dto){

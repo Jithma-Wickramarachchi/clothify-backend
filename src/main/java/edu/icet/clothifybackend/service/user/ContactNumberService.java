@@ -7,6 +7,6 @@ import java.util.List;
 public interface ContactNumberService {
     ContactNumberDto saveContact(ContactNumberDto dto);
     List<ContactNumberDto> getContactListByUsername(String username);
-    String deleteContact(String contact);
+    Long deleteContact(Long id);
     ContactNumberDto updateContact(ContactNumberDto dto);
 }

@@ -49,13 +49,13 @@ public class ContactNumberServiceImpl implements ContactNumberService {
     }
 
     @Override
-    public String deleteContact(String contact) {
+    public Long deleteContact(Long id) {
         //check contact available the database
-        if (contactRepository.findById(contact).isEmpty()) {
-            throw new ContactNumberNotFoundException(contact);
+        if (contactRepository.findById(id).isEmpty()) {
+            throw new ContactNumberNotFoundException(id);
         }
-        contactRepository.deleteById(contact);
-        return contact;
+        contactRepository.deleteById(id);
+        return id;
     }
 
     @Override
@@ -65,12 +65,13 @@ public class ContactNumberServiceImpl implements ContactNumberService {
                 .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
 
         //check whether contact in database or not
-        if (contactRepository.findById(dto.getContactNumber()).isEmpty()) {
-            throw new ContactNumberNotFoundException(dto.getContactNumber());
+        if (contactRepository.findById(dto.getId()).isEmpty()) {
+            throw new ContactNumberNotFoundException(dto.getId());
         }
         //convert dto into entity and update
         ContactNumberEntity savedEntity = contactRepository.save(mapper.convertDtoToEntity(dto, user));
 
         //convert entity into dto and return
-        return mapper.convertEntityToDto(savedEntity);    }
+        return mapper.convertEntityToDto(savedEntity);
+    }
 }

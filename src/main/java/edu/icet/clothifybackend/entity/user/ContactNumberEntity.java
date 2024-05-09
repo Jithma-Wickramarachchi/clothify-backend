@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "contact_number")
 public class ContactNumberEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "contact")
     private String contactNumber;
 
     @ManyToOne
