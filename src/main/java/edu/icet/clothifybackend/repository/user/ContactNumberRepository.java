@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ContactNumberRepository extends JpaRepository<ContactNumberEntity, String> {
     @Query(value = "SELECT * FROM contact_number WHERE username = :username", nativeQuery = true)
-    List<AddressEntity> getContactListByUsername(@Param("username")String username);
+    List<ContactNumberEntity> getContactListByUsername(@Param("username")String username);
 }

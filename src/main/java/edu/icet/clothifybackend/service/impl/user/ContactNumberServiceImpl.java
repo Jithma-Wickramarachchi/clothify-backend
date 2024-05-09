@@ -1,19 +1,18 @@
 package edu.icet.clothifybackend.service.impl.user;
 
 import edu.icet.clothifybackend.dto.user.ContactNumberDto;
-import edu.icet.clothifybackend.entity.user.AddressEntity;
 import edu.icet.clothifybackend.entity.user.ContactNumberEntity;
 import edu.icet.clothifybackend.entity.user.User;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
-import edu.icet.clothifybackend.repository.user.AddressRepository;
 import edu.icet.clothifybackend.repository.user.ContactNumberRepository;
 import edu.icet.clothifybackend.repository.user.UserRepository;
 import edu.icet.clothifybackend.service.user.ContactNumberService;
-import edu.icet.clothifybackend.service.util.AddressMapper;
 import edu.icet.clothifybackend.service.util.ContactNumberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,16 @@ public class ContactNumberServiceImpl implements ContactNumberService {
 
     @Override
     public List<ContactNumberDto> getContactListByUsername(String username) {
-        return null;
+        List<ContactNumberEntity> entityList = contactRepository.getContactListByUsername(username);
+        Iterator<ContactNumberEntity> iterator = entityList.iterator();
+
+        //convert entities into dto and add one by one
+        ArrayList<ContactNumberDto> dtoList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            ContactNumberDto dto = mapper.convertEntityToDto(iterator.next());
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     @Override
