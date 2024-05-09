@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +19,9 @@ public class PaymentDetailsController {
     @PostMapping
     public ResponseEntity<PaymentDetailsDto> savePaymentDetails(@Valid @RequestBody PaymentDetailsDto dto){
         return new ResponseEntity<>(service.savePaymentDetails(dto), HttpStatus.CREATED);
+    }
+    @GetMapping("/{username}")
+    public ResponseEntity<List<PaymentDetailsDto>> getPaymentDetailsListByUsername(@PathVariable String username){
+        return new ResponseEntity<>(service.getPaymentDetailsListByUsername(username), HttpStatus.OK);
     }
 }
