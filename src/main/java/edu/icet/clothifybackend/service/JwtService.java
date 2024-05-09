@@ -1,6 +1,6 @@
 package edu.icet.clothifybackend.service;
 
-import edu.icet.clothifybackend.entity.User;
+import edu.icet.clothifybackend.entity.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

@@ -1,10 +1,11 @@
 package edu.icet.clothifybackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.icet.clothifybackend.dto.ItemDto;
+import edu.icet.clothifybackend.controller.item.ItemController;
+import edu.icet.clothifybackend.dto.item.ItemDto;
 import edu.icet.clothifybackend.exception.GlobalExceptionHandler;
-import edu.icet.clothifybackend.service.ItemService;
-import edu.icet.clothifybackend.service.config.ItemMapper;
+import edu.icet.clothifybackend.service.item.ItemService;
+import edu.icet.clothifybackend.service.util.ItemMapper;
 import edu.icet.clothifybackend.util.Category;
 import edu.icet.clothifybackend.util.Size;
 import org.hamcrest.CoreMatchers;
