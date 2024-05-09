@@ -1,6 +1,5 @@
 package edu.icet.clothifybackend.entity.item;
 
-import edu.icet.clothifybackend.entity.item.ItemEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
