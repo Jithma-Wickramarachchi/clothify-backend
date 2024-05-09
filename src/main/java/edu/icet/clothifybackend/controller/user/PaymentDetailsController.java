@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.controller.user;
 
+import edu.icet.clothifybackend.dto.user.AddressDto;
 import edu.icet.clothifybackend.dto.user.PaymentDetailsDto;
 import edu.icet.clothifybackend.service.user.PaymentDetailsService;
 import jakarta.validation.Valid;
@@ -27,5 +28,9 @@ public class PaymentDetailsController {
     public ResponseEntity<String> deletePaymentDetails(@PathVariable Long id){
         Long deletedPaymentId = service.deletePaymentDetails(id);
         return new ResponseEntity<>("Payment Details("+deletedPaymentId+") has been deleted successfully!", HttpStatus.OK);
+    }
+    @PutMapping
+    public ResponseEntity<PaymentDetailsDto> updatePaymentDetails(@Valid @RequestBody PaymentDetailsDto dto){
+        return new ResponseEntity<>(service.updatePaymentDetails(dto), HttpStatus.OK);
     }
 }
