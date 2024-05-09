@@ -3,7 +3,7 @@ package edu.icet.clothifybackend.service.impl;
 import edu.icet.clothifybackend.dto.ItemDto;
 import edu.icet.clothifybackend.entity.ItemEntity;
 import edu.icet.clothifybackend.entity.StockEntity;
-import edu.icet.clothifybackend.exception.ItemIdNotFoundException;
+import edu.icet.clothifybackend.exception.item.ItemIdNotFoundException;
 import edu.icet.clothifybackend.exception.StockIdNotFoundException;
 import edu.icet.clothifybackend.repository.ItemRepository;
 import edu.icet.clothifybackend.repository.StockRepository;

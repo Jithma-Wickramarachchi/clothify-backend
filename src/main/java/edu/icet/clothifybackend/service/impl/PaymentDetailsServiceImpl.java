@@ -1,11 +1,11 @@
 package edu.icet.clothifybackend.service.impl;
 
-import edu.icet.clothifybackend.dto.AddressDto;
 import edu.icet.clothifybackend.dto.PaymentDetailsDto;
-import edu.icet.clothifybackend.entity.AddressEntity;
 import edu.icet.clothifybackend.entity.PaymentDetailsEntity;
 import edu.icet.clothifybackend.entity.User;
-import edu.icet.clothifybackend.exception.UserNotFoundException;
+import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
+import edu.icet.clothifybackend.exception.user.PaymentDetailsNotFoundException;
+import edu.icet.clothifybackend.exception.user.UserNotFoundException;
 import edu.icet.clothifybackend.repository.PaymentDetailsRepository;
 import edu.icet.clothifybackend.repository.UserRepository;
 import edu.icet.clothifybackend.service.PaymentDetailsService;
@@ -50,7 +50,13 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
 
     @Override
     public Long deletePaymentDetails(Long id) {
-        return null;
+        //check id available the database
+        if (paymentRepository.findById(id).isEmpty()) {
+            throw new PaymentDetailsNotFoundException(id);
+        }
+        //delete id
+        paymentRepository.deleteById(id);
+        return id;
     }
 
     @Override
