@@ -21,8 +21,6 @@ import java.util.List;
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String username;
     private String password;
     @Enumerated(value = EnumType.STRING)

@@ -1,7 +1,6 @@
 package edu.icet.clothifybackend.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +28,6 @@ public class AddressDto {
     @NotBlank(message = "postal code cannot be blank or null")
     private String postalCode;
 
-    @NotNull(message = "userId cannot be null")
-    private Long userId;
+    @NotBlank(message = "username cannot be blank or null")
+    private String username;
 }

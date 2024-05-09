@@ -14,7 +14,7 @@ public class AddressMapper {
     private final ObjectMapper mapper;
     public AddressDto convertEntityToDto(AddressEntity addressEntity){
         AddressDto addressDto = mapper.convertValue(addressEntity, AddressDto.class);
-        addressDto.setUserId(addressEntity.getUser().getId());
+        addressDto.setUsername(addressEntity.getUser().getUsername());
         return addressDto;
     }
 

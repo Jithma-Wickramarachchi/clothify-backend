@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "address")
 public class AddressEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String getHouseNumber;
     private String street;
@@ -22,6 +23,6 @@ public class AddressEntity {
     private String postalCode;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "username", nullable = false)
     private User user;
 }

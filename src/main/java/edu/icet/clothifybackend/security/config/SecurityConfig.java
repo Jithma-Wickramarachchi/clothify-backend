@@ -36,6 +36,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/v1/stock/**","/api/v1/item/**")
                                 .hasAuthority("ADMIN")
+                                .requestMatchers("/api/v1/user/**")
+                                .hasAnyAuthority("ADMIN", "CUSTOMER")
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(userDetailsServiceImpl)

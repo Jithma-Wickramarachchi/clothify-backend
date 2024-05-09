@@ -24,8 +24,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto saveAddress(AddressDto dto) {
         //Throw exception when user not found
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
+        User user = userRepository.findUserByUsername(dto.getUsername())
+                .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
 
         //convert address dto to entity and save
         AddressEntity savedAddress = addressRepository.save(mapper.convertDtoToEntity(dto, user));
@@ -61,8 +61,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto updateAddress(AddressDto dto) {
         //check whether user in database
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
+        User user = userRepository.findUserByUsername(dto.getUsername())
+                .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
 
         //check whether address in database
         if (addressRepository.findById(dto.getId()).isEmpty()) {
