@@ -2,11 +2,8 @@ package edu.icet.clothifybackend.service.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.icet.clothifybackend.dto.AddressDto;
-import edu.icet.clothifybackend.dto.ItemDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
-import edu.icet.clothifybackend.entity.ItemEntity;
-import edu.icet.clothifybackend.entity.StockEntity;
-import edu.icet.clothifybackend.entity.UserEntity;
+import edu.icet.clothifybackend.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,9 +18,9 @@ public class AddressMapper {
         return addressDto;
     }
 
-    public AddressEntity convertDtoToEntity(AddressDto addressDto, UserEntity userEntity){
+    public AddressEntity convertDtoToEntity(AddressDto addressDto, User user){
         AddressEntity addressEntity = mapper.convertValue(addressDto, AddressEntity.class);
-        addressEntity.setUser(userEntity);
+        addressEntity.setUser(user);
         return addressEntity;
     }
 }

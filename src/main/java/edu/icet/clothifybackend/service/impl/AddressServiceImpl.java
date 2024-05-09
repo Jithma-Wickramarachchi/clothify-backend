@@ -2,7 +2,7 @@ package edu.icet.clothifybackend.service.impl;
 
 import edu.icet.clothifybackend.dto.AddressDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
-import edu.icet.clothifybackend.entity.UserEntity;
+import edu.icet.clothifybackend.entity.User;
 import edu.icet.clothifybackend.exception.AddressNotFoundException;
 import edu.icet.clothifybackend.exception.UserNotFoundException;
 import edu.icet.clothifybackend.repository.AddressRepository;
@@ -24,11 +24,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto saveAddress(AddressDto dto) {
         //Throw exception when user not found
-        UserEntity userEntity = userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
 
         //convert address dto to entity and save
-        AddressEntity savedAddress = addressRepository.save(mapper.convertDtoToEntity(dto, userEntity));
+        AddressEntity savedAddress = addressRepository.save(mapper.convertDtoToEntity(dto, user));
 
         //Convert saved entity into dto and return
         return mapper.convertEntityToDto(savedAddress);
@@ -61,15 +61,15 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto updateAddress(AddressDto dto) {
         //check whether user in database
-        UserEntity userEntity = userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(()-> new UserNotFoundException(dto.getUserId()));
 
         //check whether address in database
-        addressRepository.findById(dto.getId())
-                .orElseThrow(()-> new AddressNotFoundException(dto.getId()));
-
+        if (addressRepository.findById(dto.getId()).isEmpty()) {
+                throw new AddressNotFoundException(dto.getId());
+        }
         //convert dto into entity and update
-        AddressEntity savedEntity = addressRepository.save(mapper.convertDtoToEntity(dto, userEntity));
+        AddressEntity savedEntity = addressRepository.save(mapper.convertDtoToEntity(dto, user));
 
         //convert entity into dto and return
         return mapper.convertEntityToDto(savedEntity);
