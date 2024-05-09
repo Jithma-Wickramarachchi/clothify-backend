@@ -1,8 +1,10 @@
 package edu.icet.clothifybackend.service.impl.user;
 
 import edu.icet.clothifybackend.dto.user.PaymentDetailsDto;
+import edu.icet.clothifybackend.entity.user.AddressEntity;
 import edu.icet.clothifybackend.entity.user.PaymentDetailsEntity;
 import edu.icet.clothifybackend.entity.user.User;
+import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
 import edu.icet.clothifybackend.exception.user.PaymentDetailsNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
 import edu.icet.clothifybackend.repository.user.PaymentDetailsRepository;
@@ -59,7 +61,19 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     }
 
     @Override
-    public PaymentDetailsDto updatePaymentDetails(PaymentDetailsDto dto) {
-        return null;
+    public PaymentDetailsDto updatePaymentDetails(PaymentDetailsDto dto){
+    //check whether user in database
+    User user = userRepository.findUserByUsername(dto.getUsername())
+            .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
+
+    //check whether payment details in database
+        if (paymentRepository.findById(dto.getId()).isEmpty()) {
+        throw new PaymentDetailsNotFoundException(dto.getId());
+    }
+    //convert dto into entity and update
+    PaymentDetailsEntity savedEntity = paymentRepository.save(mapper.convertDtoToEntity(dto, user));
+
+    //convert entity into dto and return
+        return mapper.convertEntityToDto(savedEntity);
     }
 }
