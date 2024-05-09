@@ -1,13 +1,14 @@
 package edu.icet.clothifybackend.service.impl;
 
-import edu.icet.clothifybackend.dto.ItemDto;
-import edu.icet.clothifybackend.entity.ItemEntity;
+import edu.icet.clothifybackend.dto.item.ItemDto;
+import edu.icet.clothifybackend.entity.item.ItemEntity;
 import edu.icet.clothifybackend.entity.StockEntity;
 import edu.icet.clothifybackend.exception.item.ItemIdNotFoundException;
 import edu.icet.clothifybackend.exception.StockIdNotFoundException;
-import edu.icet.clothifybackend.repository.ItemRepository;
+import edu.icet.clothifybackend.repository.item.ItemRepository;
 import edu.icet.clothifybackend.repository.StockRepository;
-import edu.icet.clothifybackend.service.config.ItemMapper;
+import edu.icet.clothifybackend.service.impl.item.ItemServiceImpl;
+import edu.icet.clothifybackend.service.util.ItemMapper;
 import edu.icet.clothifybackend.util.Category;
 import edu.icet.clothifybackend.util.Size;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package edu.icet.clothifybackend.security;
 
 import edu.icet.clothifybackend.service.JwtService;
-import edu.icet.clothifybackend.service.impl.UserDetailsServiceImpl;
+import edu.icet.clothifybackend.service.impl.user.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

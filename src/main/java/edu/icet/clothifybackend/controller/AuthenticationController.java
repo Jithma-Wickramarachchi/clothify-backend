@@ -1,6 +1,6 @@
 package edu.icet.clothifybackend.controller;
 
-import edu.icet.clothifybackend.entity.User;
+import edu.icet.clothifybackend.entity.user.User;
 import edu.icet.clothifybackend.security.AuthenticationResponse;
 import edu.icet.clothifybackend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;

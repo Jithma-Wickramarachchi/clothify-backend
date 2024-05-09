@@ -1,7 +1,7 @@
 package edu.icet.clothifybackend.service;
 
-import edu.icet.clothifybackend.entity.User;
-import edu.icet.clothifybackend.repository.UserRepository;
+import edu.icet.clothifybackend.entity.user.User;
+import edu.icet.clothifybackend.repository.user.UserRepository;
 import edu.icet.clothifybackend.security.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

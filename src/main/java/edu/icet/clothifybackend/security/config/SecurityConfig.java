@@ -2,7 +2,7 @@ package edu.icet.clothifybackend.security.config;
 
 import edu.icet.clothifybackend.exception.CustomAccessDeniedHandler;
 import edu.icet.clothifybackend.security.JwtAuthenticationFilter;
-import edu.icet.clothifybackend.service.impl.UserDetailsServiceImpl;
+import edu.icet.clothifybackend.service.impl.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
