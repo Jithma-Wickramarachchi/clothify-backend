@@ -33,7 +33,6 @@ public class AddressServiceImpl implements AddressService {
         //Convert saved entity into dto and return
         return mapper.convertEntityToDto(savedAddress);
     }
-
     @Override
     public List<AddressDto> getAddressListByUsername(String username) {
         List<AddressEntity> entityList = addressRepository.getAddressListByUsername(username);
@@ -47,7 +46,6 @@ public class AddressServiceImpl implements AddressService {
         }
         return dtoList;
     }
-
     @Override
     public Long deleteAddress(Long id) {
         //check id available the database

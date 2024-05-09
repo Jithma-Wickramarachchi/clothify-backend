@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface PaymentDetailsRepository extends JpaRepository<PaymentDetailsEntity, Long> {
     @Query(value = "SELECT * FROM payment_details WHERE username = :username", nativeQuery = true)
-    List<AddressEntity> getPaymentDetailsListByUsername(@Param("username")String username);
+    List<PaymentDetailsEntity> getPaymentDetailsListByUsername(@Param("username")String username);
 }

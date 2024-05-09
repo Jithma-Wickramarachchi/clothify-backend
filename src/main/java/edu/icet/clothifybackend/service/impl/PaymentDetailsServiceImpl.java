@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.service.impl;
 
+import edu.icet.clothifybackend.dto.AddressDto;
 import edu.icet.clothifybackend.dto.PaymentDetailsDto;
 import edu.icet.clothifybackend.entity.AddressEntity;
 import edu.icet.clothifybackend.entity.PaymentDetailsEntity;
@@ -11,6 +12,8 @@ import edu.icet.clothifybackend.service.PaymentDetailsService;
 import edu.icet.clothifybackend.service.config.PaymentDetailsMapper;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 @RequiredArgsConstructor
 public class PaymentDetailsServiceImpl implements PaymentDetailsService {
@@ -33,7 +36,16 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
 
     @Override
     public List<PaymentDetailsDto> getPaymentDetailsListByUsername(String username) {
-        return null;
+        List<PaymentDetailsEntity> entityList = paymentRepository.getPaymentDetailsListByUsername(username);
+        Iterator<PaymentDetailsEntity> iterator = entityList.iterator();
+
+        //convert entities into dto and add one by one
+        ArrayList<PaymentDetailsDto> dtoList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            PaymentDetailsDto dto = mapper.convertEntityToDto(iterator.next());
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     @Override
