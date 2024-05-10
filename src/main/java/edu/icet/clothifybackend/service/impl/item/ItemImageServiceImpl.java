@@ -25,7 +25,6 @@ public class ItemImageServiceImpl implements ItemImageService {
 
     @Override
     public Long saveImage(ItemImageSaveDto dto) throws IOException {
-        log.info("itemImage service runs...");
         //Check that itemId is available
         ItemEntity itemEntity = itemRepository.getItemByItemId(dto.getItemId())
                 .orElseThrow(() ->

@@ -12,5 +12,4 @@ import org.springframework.web.multipart.MultipartFile;
 public class ItemImageSaveDto {
     private Long itemId;
     private MultipartFile file;
-
 }
