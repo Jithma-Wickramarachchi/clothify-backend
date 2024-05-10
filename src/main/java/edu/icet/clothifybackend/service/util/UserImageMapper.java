@@ -12,6 +12,7 @@ import java.io.IOException;
 public class UserImageMapper {
     public UserImageRetrieveDto convertEntityToDto(UserImageEntity imageEntity){
         return UserImageRetrieveDto.builder()
+                .id(imageEntity.getId())
                 .data(imageEntity.getData())
                 .build();
     }

@@ -8,4 +8,5 @@ import java.io.IOException;
 public interface UserImageService {
     Long saveImage(UserImageSaveDto dto) throws IOException;
     UserImageRetrieveDto retrieveImage(String username) throws IOException;
+
 }

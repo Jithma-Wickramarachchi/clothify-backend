@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserImageRetrieveDto {
+    private Long id;
     private byte[] data;
 }
