@@ -1,13 +1,9 @@
 package edu.icet.clothifybackend.service.impl.user;
 
-import edu.icet.clothifybackend.dto.item.ItemImageRetrieveDto;
-import edu.icet.clothifybackend.dto.item.ItemImageSaveDto;
 import edu.icet.clothifybackend.dto.user.UserImageRetrieveDto;
 import edu.icet.clothifybackend.dto.user.UserImageSaveDto;
-import edu.icet.clothifybackend.entity.item.ItemImageEntity;
 import edu.icet.clothifybackend.entity.user.User;
 import edu.icet.clothifybackend.entity.user.UserImageEntity;
-import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserImageNotFoundException;
 import edu.icet.clothifybackend.repository.user.UserImageRepository;
 import edu.icet.clothifybackend.repository.user.UserRepository;

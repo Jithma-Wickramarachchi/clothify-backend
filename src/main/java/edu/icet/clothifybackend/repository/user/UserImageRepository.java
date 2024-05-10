@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface UserImageRepository extends JpaRepository<UserImageEntity, Long> {
     @Query(value = "SELECT * FROM user_image WHERE username = :username", nativeQuery = true)
-    public Optional<UserImageEntity> findItemImageByUsername(@Param("username") String username);
+    Optional<UserImageEntity> findItemImageByUsername(@Param("username") String username);
 }
