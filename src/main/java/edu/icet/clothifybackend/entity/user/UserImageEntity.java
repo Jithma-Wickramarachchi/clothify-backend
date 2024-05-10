@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_image")
