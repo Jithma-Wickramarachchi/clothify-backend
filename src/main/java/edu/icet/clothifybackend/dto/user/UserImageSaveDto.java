@@ -1,4 +1,4 @@
-package edu.icet.clothifybackend.dto.item;
+package edu.icet.clothifybackend.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemImageSaveDto {
-    private Long itemId;
+public class UserImageSaveDto {
+    private Long id;
     private MultipartFile file;
+    private String username;
 }

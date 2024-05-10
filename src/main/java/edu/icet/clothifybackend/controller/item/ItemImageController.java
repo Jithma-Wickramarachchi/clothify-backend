@@ -3,7 +3,6 @@ package edu.icet.clothifybackend.controller.item;
 import edu.icet.clothifybackend.dto.item.ItemImageSaveDto;
 import edu.icet.clothifybackend.service.item.ItemImageService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/item/image")
 public class ItemImageController {
@@ -31,5 +29,4 @@ public class ItemImageController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(service.retrieveImage(id).getData());
     }
-
 }
