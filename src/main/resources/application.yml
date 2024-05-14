@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/clothify
+    url: jdbc:mysql://mysql-jithma-clothify.l.aivencloud.com:19308/clothify
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
@@ -10,7 +10,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: clothify.web@gmail.com
-    password: ${mailsender}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
