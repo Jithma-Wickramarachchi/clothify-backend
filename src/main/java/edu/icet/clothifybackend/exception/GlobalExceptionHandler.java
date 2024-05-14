@@ -5,10 +5,7 @@ import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
 import edu.icet.clothifybackend.exception.otp.OtpHasBeenExpiredException;
 import edu.icet.clothifybackend.exception.otp.OtpIsNotCorrectException;
 import edu.icet.clothifybackend.exception.otp.OtpNotFoundException;
-import edu.icet.clothifybackend.exception.user.AddressNotFoundException;
-import edu.icet.clothifybackend.exception.user.ContactNumberNotFoundException;
-import edu.icet.clothifybackend.exception.user.PaymentDetailsNotFoundException;
-import edu.icet.clothifybackend.exception.user.UserImageNotFoundException;
+import edu.icet.clothifybackend.exception.user.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +67,11 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(OtpHasBeenExpiredException.class)
     public ResponseEntity<ErrorResponse> handleOtpHasBeenExpiredException(OtpHasBeenExpiredException ex){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+    @ExceptionHandler(PasswordsDoNotMatchException.class)
+    public ResponseEntity<ErrorResponse> handlePasswordsDoNotMatchException(PasswordsDoNotMatchException ex){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
