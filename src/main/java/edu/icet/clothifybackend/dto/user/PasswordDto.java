@@ -1,4 +1,4 @@
-package edu.icet.clothifybackend.controller.user;
+package edu.icet.clothifybackend.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

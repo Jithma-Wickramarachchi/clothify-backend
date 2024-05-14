@@ -75,6 +75,11 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentsNotValidException(MethodArgumentNotValidException ex){
         return getMapResponseEntity(ex);

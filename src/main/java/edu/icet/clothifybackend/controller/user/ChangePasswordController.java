@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.controller.user;
 
+import edu.icet.clothifybackend.dto.user.PasswordDto;
 import edu.icet.clothifybackend.service.user.ChangePasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
