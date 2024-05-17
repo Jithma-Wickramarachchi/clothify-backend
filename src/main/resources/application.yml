@@ -17,6 +17,3 @@ spring:
           auth: true
           starttls:
             enable: true
-
-jwt:
-  secret: ${HEX_KEY_01}
