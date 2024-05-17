@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://mysql-jithma-clothify.l.aivencloud.com:19308/clothify
+    url: jdbc:mysql://mysql-jithma-clothify.l.aivencloud.com:19304/clothify
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
