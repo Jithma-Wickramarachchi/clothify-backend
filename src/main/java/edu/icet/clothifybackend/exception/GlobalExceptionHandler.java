@@ -2,6 +2,7 @@ package edu.icet.clothifybackend.exception;
 
 import edu.icet.clothifybackend.exception.item.ItemIdNotFoundException;
 import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
+import edu.icet.clothifybackend.exception.order.OrderNotFoundException;
 import edu.icet.clothifybackend.exception.otp.OtpHasBeenExpiredException;
 import edu.icet.clothifybackend.exception.otp.OtpIsNotCorrectException;
 import edu.icet.clothifybackend.exception.otp.OtpNotFoundException;
@@ -77,8 +78,13 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex){
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleOrderNotFoundException(OrderNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentsNotValidException(MethodArgumentNotValidException ex){
