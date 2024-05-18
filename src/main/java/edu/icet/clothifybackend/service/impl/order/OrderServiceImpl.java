@@ -3,6 +3,7 @@ package edu.icet.clothifybackend.service.impl.order;
 import edu.icet.clothifybackend.dto.order.OrderDto;
 import edu.icet.clothifybackend.entity.order.OrderEntity;
 import edu.icet.clothifybackend.entity.user.User;
+import edu.icet.clothifybackend.exception.order.OrderNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
 import edu.icet.clothifybackend.repository.order.OrderRepository;
 import edu.icet.clothifybackend.repository.user.UserRepository;
@@ -11,6 +12,8 @@ import edu.icet.clothifybackend.service.util.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -34,16 +37,42 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrderListByUsername(String username) {
-        return null;
+        List<OrderEntity> entityList = orderRepository.getOrderListByUsername(username);
+        Iterator<OrderEntity> iterator = entityList.iterator();
+
+        //convert entities into dto and add one by one
+        ArrayList<OrderDto> dtoList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            OrderDto dto = mapper.convertEntityToDto(iterator.next());
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     @Override
     public Long deleteOrder(Long id) {
-        return null;
+        //check id available the database
+        if (orderRepository.findById(id).isEmpty()) {
+            throw new OrderNotFoundException(id);
+        }
+        orderRepository.deleteById(id);
+        return id;
     }
 
     @Override
     public OrderDto updateOrder(OrderDto dto) {
-        return null;
+        //check whether user in database
+        User user = userRepository.findUserByUsername(dto.getUsername())
+                .orElseThrow(()-> new UserNotFoundException(dto.getUsername()));
+
+        //check whether order in database
+        if (orderRepository.findById(dto.getId()).isEmpty()) {
+            throw new OrderNotFoundException(dto.getId());
+        }
+        //convert dto into entity and update
+        OrderEntity savedEntity = orderRepository.save(mapper.convertDtoToEntity(dto, user));
+
+        //convert entity into dto and return
+        return mapper.convertEntityToDto(savedEntity);
     }
 }

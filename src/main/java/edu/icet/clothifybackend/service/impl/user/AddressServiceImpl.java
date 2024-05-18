@@ -55,7 +55,6 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.deleteById(id);
         return id;
     }
-
     @Override
     public AddressDto updateAddress(AddressDto dto) {
         //check whether user in database

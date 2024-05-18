@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     @Query(value = "SELECT * FROM orders WHERE username = :username", nativeQuery = true)
-    Optional<List<OrderEntity>> getOrderListByUsername(String username);
+    List<OrderEntity> getOrderListByUsername(String username);
 }
