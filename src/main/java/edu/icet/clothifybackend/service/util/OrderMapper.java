@@ -1,8 +1,8 @@
 package edu.icet.clothifybackend.service.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.icet.clothifybackend.dto.order.OrderDto;
-import edu.icet.clothifybackend.entity.order.OrderEntity;
+import edu.icet.clothifybackend.dto.user.OrderDto;
+import edu.icet.clothifybackend.entity.user.OrderEntity;
 import edu.icet.clothifybackend.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

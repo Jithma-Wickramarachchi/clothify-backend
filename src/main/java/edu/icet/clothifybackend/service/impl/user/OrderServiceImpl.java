@@ -1,13 +1,13 @@
-package edu.icet.clothifybackend.service.impl.order;
+package edu.icet.clothifybackend.service.impl.user;
 
-import edu.icet.clothifybackend.dto.order.OrderDto;
-import edu.icet.clothifybackend.entity.order.OrderEntity;
+import edu.icet.clothifybackend.dto.user.OrderDto;
+import edu.icet.clothifybackend.entity.user.OrderEntity;
 import edu.icet.clothifybackend.entity.user.User;
-import edu.icet.clothifybackend.exception.order.OrderNotFoundException;
+import edu.icet.clothifybackend.exception.user.OrderNotFoundException;
 import edu.icet.clothifybackend.exception.user.UserNotFoundException;
-import edu.icet.clothifybackend.repository.order.OrderRepository;
+import edu.icet.clothifybackend.repository.user.OrderRepository;
 import edu.icet.clothifybackend.repository.user.UserRepository;
-import edu.icet.clothifybackend.service.order.OrderService;
+import edu.icet.clothifybackend.service.user.OrderService;
 import edu.icet.clothifybackend.service.util.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

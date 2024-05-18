@@ -2,7 +2,7 @@ package edu.icet.clothifybackend.exception;
 
 import edu.icet.clothifybackend.exception.item.ItemIdNotFoundException;
 import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
-import edu.icet.clothifybackend.exception.order.OrderNotFoundException;
+import edu.icet.clothifybackend.exception.user.OrderNotFoundException;
 import edu.icet.clothifybackend.exception.otp.OtpHasBeenExpiredException;
 import edu.icet.clothifybackend.exception.otp.OtpIsNotCorrectException;
 import edu.icet.clothifybackend.exception.otp.OtpNotFoundException;

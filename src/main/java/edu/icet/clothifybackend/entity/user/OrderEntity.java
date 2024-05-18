@@ -1,6 +1,5 @@
-package edu.icet.clothifybackend.entity.order;
+package edu.icet.clothifybackend.entity.user;
 
-import edu.icet.clothifybackend.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

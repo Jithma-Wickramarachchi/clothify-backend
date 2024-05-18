@@ -1,6 +1,6 @@
-package edu.icet.clothifybackend.service.order;
+package edu.icet.clothifybackend.service.user;
 
-import edu.icet.clothifybackend.dto.order.OrderDto;
+import edu.icet.clothifybackend.dto.user.OrderDto;
 
 import java.util.List;
 

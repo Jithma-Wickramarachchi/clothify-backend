@@ -1,4 +1,4 @@
-package edu.icet.clothifybackend.dto.order;
+package edu.icet.clothifybackend.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
