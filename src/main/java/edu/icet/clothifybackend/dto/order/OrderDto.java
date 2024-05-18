@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.dto.order;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,6 @@ public class OrderDto {
     @NotNull(message = "date cannot be null")
     private LocalDateTime date;
 
-    @NotNull(message = "user id cannot be null")
-    @Positive(message = "user id should be positive")
-    private Long userId;
+    @NotBlank(message = "username cannot be blank or null")
+    private String username;
 }
