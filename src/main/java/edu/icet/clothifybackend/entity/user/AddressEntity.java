@@ -16,7 +16,10 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String getHouseNumber;
+
+    @Column(name = "house_number")
+    private String houseNumber;
+
     private String street;
     private String city;
     private String state;
