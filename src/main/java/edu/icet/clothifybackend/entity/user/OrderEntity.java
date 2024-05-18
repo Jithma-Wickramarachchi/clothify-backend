@@ -1,5 +1,6 @@
 package edu.icet.clothifybackend.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class OrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "total_cost")
@@ -32,8 +33,10 @@ public class OrderEntity {
     @Column(name = "contact_number_id")
     private Long contactNumberId;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
 
-    @JoinColumn(name = "user", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "username", nullable = false)
     private User user;
 }
