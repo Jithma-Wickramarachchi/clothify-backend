@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDto {
+    private Long id;
+
     @NotNull(message = "total cost cannot be null")
     @Positive(message = "total cost should be positive")
     private Double totalCost;
