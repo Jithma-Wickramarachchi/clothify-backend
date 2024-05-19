@@ -5,9 +5,11 @@ import edu.icet.clothifybackend.util.Size;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @Builder
 @Table(name = "ordered_item")
 @AllArgsConstructor

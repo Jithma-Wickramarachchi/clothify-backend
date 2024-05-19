@@ -40,7 +40,4 @@ public class OrderedItemDto {
     @NotNull(message = "orderId cannot be null")
     @Positive(message = "orderId should be a positive number")
     private Long orderId;
-
-    @NotBlank(message = "username cannot be null or blank")
-    private Long username;
 }
