@@ -17,10 +17,8 @@ public class UserImageController {
     private final UserImageService service;
     @PostMapping("/{username}")
     public ResponseEntity<String> saveImage(@RequestParam("file") MultipartFile file,
-                                            @RequestParam("id") Long id,
                                             @PathVariable String username ) throws IOException {
         UserImageSaveDto dto = UserImageSaveDto.builder()
-                .id(id)
                 .username(username)
                 .file(file)
                 .build();

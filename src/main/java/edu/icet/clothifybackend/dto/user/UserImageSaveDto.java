@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserImageSaveDto {
-    private Long id;
     private MultipartFile file;
     private String username;
 }
