@@ -27,14 +27,14 @@ public class OrderedItemDto {
     @Positive(message = "price should be a positive number")
     private Double price;
 
-    @NotBlank(message = "category cannot be blank or null")
+    @NotNull(message = "category cannot be null")
     private Category category;
 
     @NotNull(message = "count cannot be null")
     @Positive(message = "count should be a positive number")
     private Integer count;
 
-    @NotBlank(message = "size cannot be blank or null")
+    @NotNull(message = "size cannot be null")
     private Size size;
 
     @NotNull(message = "orderId cannot be null")
