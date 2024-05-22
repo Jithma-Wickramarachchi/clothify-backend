@@ -19,7 +19,6 @@ public class UserImageMapper {
 
     public UserImageEntity convertDtoToEntity(UserImageSaveDto imageDto, User user) throws IOException {
         return UserImageEntity.builder()
-                .id(imageDto.getId())
                 .name(imageDto.getFile().getName())
                 .data(imageDto.getFile().getBytes())
                 .user(user)

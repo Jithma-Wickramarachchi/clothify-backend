@@ -27,11 +27,10 @@ public class ItemDto {
     @Positive(message = "item price should be positive number")
     private Double price;
 
-    @NotNull(message = "item category cannot be blank or null")
+    @NotNull(message = "item category cannot be null")
     private Category category;
 
     @NotNull(message = "item size cannot be null")
-    @Positive(message = "item size should be positive number")
     private Size size;
 
     @NotNull(message = "item count cannot be null")

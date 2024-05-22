@@ -10,6 +10,7 @@ import edu.icet.clothifybackend.exception.item.ItemImageNotFoundException;
 import edu.icet.clothifybackend.repository.item.ItemImageRepository;
 import edu.icet.clothifybackend.repository.item.ItemRepository;
 import edu.icet.clothifybackend.service.item.ItemImageService;
+import edu.icet.clothifybackend.service.util.ItemImageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class ItemImageServiceImpl implements ItemImageService {
     private final ItemImageRepository imageRepository;
     private final ItemRepository itemRepository;
+    private final ItemImageMapper mapper;
 
     @Override
     public Long saveImage(ItemImageSaveDto dto) throws IOException {
@@ -30,13 +32,10 @@ public class ItemImageServiceImpl implements ItemImageService {
                 .orElseThrow(() ->
                         new ItemIdNotFoundException(dto.getItemId()));
 
-        //Convert image to byte[]
-        ItemImageEntity entity = ItemImageEntity.builder()
-                .item(itemEntity)
-                .name(dto.getFile().getName())
-                .data(dto.getFile().getBytes()).build();
+        //Convert image to entity
+        ItemImageEntity entity = mapper.convertDtoToEntity(dto, itemEntity);
 
-        //Save the byte[] and return its id.
+        //Save the entity and return its id.
         ItemImageEntity savedEntity = imageRepository.save(entity);
         return savedEntity.getId();
     }
@@ -47,9 +46,7 @@ public class ItemImageServiceImpl implements ItemImageService {
         ItemImageEntity entity = imageRepository.findItemImageByItemId(id)
                 .orElseThrow(() -> new ItemImageNotFoundException(id));
 
-        //Return byte[] of the image
-        return ItemImageRetrieveDto.builder()
-                .data(entity.getData())
-                .build();
+        //Return dto within the image
+        return mapper.convertEntityToDto(entity);
     }
 }

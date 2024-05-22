@@ -23,10 +23,10 @@ public class ItemImageController {
                 .build();
         return ResponseEntity.ok("Item image saved successfully! id:"+service.saveImage(dto));
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> retrieveItemImage(@PathVariable Long id) throws IOException {
+    @GetMapping("/{itemId}")
+    public ResponseEntity<byte[]> retrieveItemImage(@PathVariable Long itemId) throws IOException {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(service.retrieveImage(id).getData());
+                .body(service.retrieveImage(itemId).getData());
     }
 }
